@@ -1,43 +1,25 @@
-function add(number1, number2) {
-    return number1 + number2;
+async function fetchUserData() {
+    const apiUrl = 'https://jsonplaceholder.typicode.com/users';
+    const dataContainer = document.getElementById('api-data');
+
+    try {
+        const response = await fetch(apiUrl);
+        const users = await response.json();
+        
+        dataContainer.innerHTML = '';
+        
+        const userList = document.createElement('ul');
+        users.forEach(user => {
+            const listItem = document.createElement('li');
+            listItem.textContent = user.name;
+            userList.appendChild(listItem);
+        });
+        
+        dataContainer.appendChild(userList);
+    } catch (error) {
+        dataContainer.innerHTML = '';
+        dataContainer.textContent = 'Failed to load user data.';
+    }
 }
 
-function subtract(number1, number2) {
-    return number1 - number2;
-}
-
-function multiply(number1, number2) {
-    return number1 * number2;
-}
-
-function divide(number1, number2) {
-    return number2 !== 0 ? number1 / number2 : "Cannot divide by zero";
-}
-
-document.getElementById('add').addEventListener('click', function() {
-    const number1 = parseFloat(document.getElementById('number1').value) || 0;
-    const number2 = parseFloat(document.getElementById('number2').value) || 0;
-    const result = add(number1, number2);
-    document.getElementById('calculation-result').textContent = result;
-});
-
-document.getElementById('subtract').addEventListener('click', function() {
-    const number1 = parseFloat(document.getElementById('number1').value) || 0;
-    const number2 = parseFloat(document.getElementById('number2').value) || 0;
-    const result = subtract(number1, number2);
-    document.getElementById('calculation-result').textContent = result;
-});
-
-document.getElementById('multiply').addEventListener('click', function() {
-    const number1 = parseFloat(document.getElementById('number1').value) || 0;
-    const number2 = parseFloat(document.getElementById('number2').value) || 0;
-    const result = multiply(number1, number2);
-    document.getElementById('calculation-result').textContent = result;
-});
-
-document.getElementById('divide').addEventListener('click', function() {
-    const number1 = parseFloat(document.getElementById('number1').value) || 0;
-    const number2 = parseFloat(document.getElementById('number2').value) || 0;
-    const result = divide(number1, number2);
-    document.getElementById('calculation-result').textContent = result;
-});
+document.addEventListener('DOMContentLoaded', fetchUserData);
